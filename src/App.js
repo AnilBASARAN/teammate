@@ -1,25 +1,30 @@
-import logo from './logo.svg';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import TeamCards from "./TeamCards.jsx";
+import {useState,useEffect} from "react";
+
+const App = () => {
+
+  const [teamInfo, setTeamInfo] = useState([]);
+  
+  const fetchInfo=()=>{
+fetch("https://api.react-formula.com/learning-api/demos/teammates-project/profiles")
+  .then((response)=>response.json())
+  .then((data)=> setTeamInfo(data) )
 }
+
+  useEffect(()=>{
+  fetchInfo();
+},[])
+  console.log(teamInfo)
+  const allTeam = teamInfo.map((member,index)=><TeamCards key={index} info={member} />)
+  
+  return <div className="bg-neutral-100 flex min-h-screen justify-center">
+  <div className="innerContainer" >
+    {allTeam}
+  </div>
+  </div>
+};
 
 export default App;
